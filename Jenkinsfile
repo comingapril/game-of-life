@@ -21,7 +21,7 @@ pipeline {
         }
         stage('copy build'){
             steps {
-                sh 'mkdir -p /tmp/${JOB_NAME}/${BUILD_ID} && cp ./gameoflife-web/target/gameoflife.war/ /tmp/${JOB_NAME}/${BUILD_ID}/'
+                sh 'mkdir -p /tmp/$JOB_NAME/${BUILD_ID} && cp ./gameoflife-web/target/gameoflife.war/ /tmp/$JOB_NAME/${BUILD_ID}/'
             }
         }
         stage('post build') {
