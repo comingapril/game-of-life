@@ -1,6 +1,6 @@
 pipeline {
-    agent { label 'MAVEN_JDK8' }
-    triggers { pollSCM ( 'H/30 * * * *')}
+    agent { label 'JDK_8' }
+    triggers { pollSCM ( '* * * * *')}
     parameters {
         choice (name: 'MAVEN_GOAL', choices: ['package', 'install', 'clean'], description: 'Maven Goal')
     }
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('package') {
             tools {
-                jdk 'JDK_8_UBUNTU'
+                jdk 'JDK_8'
             }
             steps {
                 sh "mvn ${params.MAVEN_GOAL}"
@@ -25,20 +25,6 @@ pipeline {
                                  onlyIfSuccessful: true
                 junit testResults: '**/surefire-reports/TEST-*.xml'
             }
-        }
-    }
-    post {
-        success {
-            mail subject: "Jenkins build of ${JOB_NAME} with id ${BUILD_ID} is success",
-                 body: "use this URL ${BUILD_URL} for more info",
-                 to: 'team-all-@nav.com',
-                 from: 'navi@qt.com'
-        }
-        failure {
-             mail subject: "Jenkins build of ${JOB_NAME} with id ${BUILD_ID} is failed",
-                 body: "use this URL ${BUILD_URL} for more info",
-                 to: "${GIT_AUTHOR_EMAIL}",
-                 from: 'navi@qt.com'
         }
     }
 }
